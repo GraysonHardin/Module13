@@ -14,7 +14,8 @@ last_name_input = tk.Entry(m, width=70)
 student_first_name_input = tk.Entry(m, width=70)
 student_last_name_input = tk.Entry(m, width=70)
 student_major_input = tk.Entry(m, width=70)
-
+student_start_date = tk.Entry(m, width=70)
+student_end_date = tk.Entry(m, width=70)
 
 
 def handle_database_creation():
@@ -26,7 +27,10 @@ def add_person():
     conn = create_connection("pythonsqlite.db")
     with conn:
         person = (first_name_input.get(), last_name_input.get())
-        create_person(conn, person)
+        try:
+            create_person(conn, person)
+        except:
+            raise Exception('Person database error')
         # add try and except
         first_name_input.delete(0, tk.END)
         last_name_input.delete(0, tk.END)
@@ -41,16 +45,17 @@ def add_student():
             filter(lambda person: student_first_name_input.get() in person and student_last_name_input.get() in person,
                    persons))
         person_id = person[0][0]
-        student = (person_id, student_major_input.get(), '2020-11-20', '2021-11-1')
+        student = (person_id, student_major_input.get(), student_start_date.get(), student_end_date.get())
         try:
             create_student(conn, student)
         except:
             raise Exception('Student database error')
 
-
         student_first_name_input.delete(0, tk.END)
         student_last_name_input.delete(0, tk.END)
         student_major_input.delete(0, tk.END)
+        student_start_date.delete(0, tk.END)
+        student_end_date.delete(0, tk.END)
 
 
 def query_students():
@@ -86,24 +91,27 @@ def draw_table(rows, total_columns, total_rows, column_index):
 create_database_button = tkinter.Button(m, text='Create Database and Table', width=60, command=handle_database_creation)
 create_database_button.grid(row=0)
 
-# Person content
+# Person Content
 create_person_button = tkinter.Button(m, text='Add Person', width=60, command=add_person)
 create_person_button.grid(row=1)
 first_name_input.grid(row=2)
 last_name_input.grid(row=3)
 
 view_person_table = tkinter.Button(m, text='View Person Table', width=60, command=query_persons)
-view_person_table.grid(row=8)
+view_person_table.grid(row=10)
 
+# Student Content
 view_student_table = tkinter.Button(m, text='View Student Table', width=60, command=query_students)
-view_student_table.grid(row=9)
+view_student_table.grid(row=11)
 
 create_student_button = tkinter.Button(m, text='Add Student', width=60, command=add_student)
 create_student_button.grid(row=4)
 student_first_name_input.grid(row=5)
 student_last_name_input.grid(row=6)
 student_major_input.grid(row=7)
+student_start_date.grid(row=8)
+student_end_date.grid(row=9)
 
 exit_button = tkinter.Button(m, text='Exit', width=60, command=m.destroy)
-exit_button.grid(row=10)
+exit_button.grid(row=12)
 m.mainloop()
