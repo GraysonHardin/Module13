@@ -3,7 +3,7 @@ Program: student_gui.py
 Author: Grayson Hardin
 Last date modified: 11/23/2020
 
-The GUI down below allows the user to add a person, as well as a student. However, in order to add a student, the first and last name must be in the person database.
+The GUI down below allows the user to add a person, as well as a student. However, in order to add a student, the first and last name must be in the person database. NOTE: In order for the database to function, the user must select "Create Database and Table."
 """
 
 
